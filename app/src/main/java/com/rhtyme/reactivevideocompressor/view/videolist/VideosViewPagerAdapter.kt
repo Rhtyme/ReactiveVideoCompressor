@@ -26,6 +26,16 @@ class VideosViewPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm
     }
 
     override fun getPageTitle(position: Int): CharSequence {
-        return "OBJECT ${(position + 1)}"
+        return when(position) {
+            0 -> {
+                GalleryFragment.TITLE
+            }
+            1 -> {
+                CompressedVideosFragment.TITLE
+            }
+            else -> {
+                ""
+            }
+        }
     }
 }

@@ -9,11 +9,6 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 
-
-/**
- * Created by RV on 06/09/17.
- */
-
 object ViewAnimationUtils {
 
     fun scaleAnimateView(view: View) {
