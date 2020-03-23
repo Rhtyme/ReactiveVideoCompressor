@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.rhtyme.reactivevideocompressor.data.repo.GalleryRepo
 import com.rhtyme.reactivevideocompressor.model.AlbumFile
 import com.rhtyme.reactivevideocompressor.model.Resource
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -22,7 +24,8 @@ class GalleryViewModel(context: Context, val galleryRepo: GalleryRepo) :
         albumFilesLiveData.postValue(Resource.Loading())
 
         val disposable = galleryRepo.getAllMedia(context)
-            .compose(rxSingleSchedulers.applySchedulers())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableSingleObserver<List<AlbumFile>>() {
                 override fun onSuccess(t: List<AlbumFile>) {
                     Timber.tag(GALLERY_TAG).d("onSuccess: ${t.size}")

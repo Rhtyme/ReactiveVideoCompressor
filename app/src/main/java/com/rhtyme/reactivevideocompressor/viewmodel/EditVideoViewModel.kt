@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.arthenica.mobileffmpeg.MediaInformation
 import com.rhtyme.reactivevideocompressor.data.repo.EditVideoRepo
 import com.rhtyme.reactivevideocompressor.model.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -22,7 +24,8 @@ class EditVideoViewModel(context: Context, val editVideoRepo: EditVideoRepo) :
 
         mediaInformationLiveData.postValue(Resource.Loading())
         val disposable = editVideoRepo.fetchMediaInformation(path)
-            .compose(rxSingleSchedulers.applySchedulers())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableSingleObserver<MediaInformation>() {
                 override fun onSuccess(t: MediaInformation) {
                     Timber.tag(EDIT_VIDEO_VM_T)
@@ -49,7 +52,8 @@ class EditVideoViewModel(context: Context, val editVideoRepo: EditVideoRepo) :
 
         compressInformationLiveData.value = Resource.Loading()
         val disposable = editVideoRepo.startCompression(context, config)
-            .compose(rxObservableSchedulers.applySchedulers())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : DisposableObserver<ProgressiveResult<AlbumFile>>() {
                 override fun onComplete() {
                     Timber.tag(EDIT_VIDEO_VM_T).d("startCompression, onComplete")
