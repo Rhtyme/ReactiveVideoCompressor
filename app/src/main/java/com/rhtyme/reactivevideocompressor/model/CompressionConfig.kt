@@ -15,7 +15,8 @@ data class CompressionConfig(
 
 
     fun toFFMPEGCommand(outputFolder: String): String {
-        this.outputFilePath = "$outputFolder/" + CompressorUtils.removeFileExtension(name) + "." + format.ext
+        this.outputFilePath =
+            "$outputFolder/" + CompressorUtils.removeFileExtension(name) + "." + format.ext
         val sb = StringBuilder()
         sb.append("-i ").append(path)
             .append(" -crf ").append(quality.crf)
@@ -29,12 +30,12 @@ data class CompressionConfig(
 
     class Builder {
 
-        private lateinit var path: String
-        private lateinit var name: String
+        private var path: String = ""
+        private var name: String = ""
         private var duration: Long = 0
-        private lateinit var resolution: VideoResolution
-        private lateinit var quality: VideoQuality
-        private lateinit var format: VideoFormat
+        private var resolution: VideoResolution = VideoResolution(0, 0)
+        private var quality: VideoQuality = VideoQuality.HIGH
+        private var format: VideoFormat = VideoFormat.MP4
 
 
         fun resolution(resolution: VideoResolution): Builder {
@@ -52,7 +53,7 @@ data class CompressionConfig(
             return this
         }
 
-        fun duration(duration: Long ): Builder {
+        fun duration(duration: Long): Builder {
             this.duration = duration
             return this
         }

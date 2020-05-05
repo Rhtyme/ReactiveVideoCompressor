@@ -10,7 +10,7 @@ abstract class RxSingleSchedulers {
 
     companion object {
 
-        var DEFAULT: RxSingleSchedulers = object : RxSingleSchedulers() {
+        var     DEFAULT: RxSingleSchedulers = object : RxSingleSchedulers() {
             override fun <T> applySchedulers(): SingleTransformer<T, T> {
                 return SingleTransformer<T, T> { upstream ->
                     upstream

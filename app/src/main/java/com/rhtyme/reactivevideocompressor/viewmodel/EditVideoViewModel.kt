@@ -43,7 +43,6 @@ class EditVideoViewModel(context: Context, val editVideoRepo: EditVideoRepo) :
 
         addDisposable(disposable)
     }
-
     fun startCompression(context: Context, config: CompressionConfig) {
         if (compressInformationLiveData.value is Resource.Loading) {
             return
